@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #FBF7EF;
+  color: #1f1f1f;
+}
+
+/* Override styling default react-calendar biar nyatu sama tema merah-emas */
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  font-family: inherit !important;
+  background: transparent !important;
+}
+.react-calendar__tile {
+  border-radius: 8px;
+  padding: 10px 4px !important;
+  position: relative;
+}
+.react-calendar__tile--now {
+  background: #FBF0DD !important;
+}
+.react-calendar__tile--active {
+  background: #8B1E1E !important;
+  color: white !important;
+}
+.react-calendar__navigation button {
+  font-weight: 600;
+  color: #8B1E1E;
+}
+.has-kegiatan::after {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #D4AF37;
+  margin: 4px auto 0;
+}
