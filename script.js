@@ -1,0 +1,12 @@
+const key='dprd_visitors';
+const visits=Number(localStorage.getItem(key)||0)+1;
+localStorage.setItem(key, visits);
+document.getElementById('public-visitors').textContent=visits.toLocaleString('id-ID');
+const modal=document.getElementById('login-modal');
+document.querySelectorAll('[data-open-login]').forEach(btn=>btn.addEventListener('click',()=>modal.classList.remove('hidden')));
+document.querySelectorAll('[data-close-login]').forEach(btn=>btn.addEventListener('click',()=>modal.classList.add('hidden')));
+document.getElementById('login-form').addEventListener('submit',(e)=>{e.preventDefault();const gender=document.getElementById('gender').value;const origin=document.getElementById('origin').value;localStorage.setItem('dprd_profile',JSON.stringify({gender,origin}));modal.classList.add('hidden');const toast=document.getElementById('toast');toast.textContent=`Selamat datang, ${gender} dari ${origin}.`;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3200);document.getElementById('dokumentasi').scrollIntoView({behavior:'smooth'});});
+const stats=document.querySelector('.stats');
+const savedProfile=localStorage.getItem('dprd_profile');
+if(!savedProfile) stats.style.display='none';
+document.getElementById('login-form').addEventListener('submit',()=>{stats.style.display='grid';});

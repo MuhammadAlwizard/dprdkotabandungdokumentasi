@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Humas DPRD Kota Bandung</title>
+  <meta name="description" content="Portal informasi dan dokumentasi Humas DPRD Kota Bandung." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#beranda"><span class="brand-mark">B</span><span><strong>DPRD</strong><small>KOTA BANDUNG</small></span></a>
+      <nav><a href="#tentang">Tentang</a><a href="#layanan">Layanan Humas</a><a href="#dokumentasi">Dokumentasi</a><a href="https://dprdkotabandungdokumentasi.vercel.app/" target="_blank" rel="noopener">Arsip Vercel ↗</a></nav>
+      <button class="login-btn" data-open-login>Masuk <span>→</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section id="beranda" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">PORTAL INFORMASI PUBLIK</p>
+          <h1>Menjembatani DPRD dengan <em>warga Bandung.</em></h1>
+          <p class="hero-text">Dapatkan informasi resmi, kegiatan, dan dokumentasi DPRD Kota Bandung melalui kanal Humas yang terbuka dan mudah diakses.</p>
+          <div class="hero-actions"><a class="primary-btn" href="#tentang">Kenal lebih dekat <span>↗</span></a><a class="text-link" href="#dokumentasi">Lihat dokumentasi <span>→</span></a></div>
+          <div class="hero-note"><span class="live-dot"></span><span>Informasi diperbarui secara berkala oleh Humas DPRD Kota Bandung</span></div>
+        </div>
+        <div class="hero-art" aria-label="Ilustrasi gedung DPRD Kota Bandung">
+          <div class="art-card"><span class="art-kicker">BANDUNG</span><strong>Keterbukaan.<br/>Kedekatan.<br/><i>Kepercayaan.</i></strong><div class="art-line"></div><small>HUMAS DPRD KOTA BANDUNG</small></div>
+          <div class="sun"></div><div class="building"><div class="roof"></div><div class="columns"><i></i><i></i><i></i><i></i><i></i></div><div class="base"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="section light"><div class="container two-col"><div><p class="eyebrow">TENTANG KAMI</p><h2>DPRD Kota Bandung hadir untuk <em>Bandung yang lebih baik.</em></h2></div><div class="section-copy"><p>Dewan Perwakilan Rakyat Daerah (DPRD) Kota Bandung merupakan lembaga perwakilan rakyat daerah yang berkedudukan sebagai unsur penyelenggara pemerintahan daerah.</p><p>Melalui fungsi legislasi, anggaran, dan pengawasan, DPRD menyerap aspirasi masyarakat dan mengawal pembangunan Kota Bandung.</p></div></div></section>
+    <section id="layanan" class="section"><div class="container"><div class="section-heading"><div><p class="eyebrow">PERAN HUMAS</p><h2>Informasi yang dekat,<br/><em>layanan yang terbuka.</em></h2></div><p>Humas menjadi penghubung antara DPRD dan masyarakat—menghadirkan informasi yang akurat, cepat, dan mudah dipahami.</p></div><div class="cards"><article><span class="card-no">01</span><h3>Informasi Publik</h3><p>Menyampaikan agenda, kebijakan, dan keputusan DPRD secara transparan.</p></article><article><span class="card-no">02</span><h3>Dokumentasi Kegiatan</h3><p>Mengarsipkan rapat, kunjungan kerja, dan kegiatan DPRD untuk masyarakat.</p></article><article><span class="card-no">03</span><h3>Media & Aspirasi</h3><p>Membuka ruang komunikasi dan menyerap aspirasi warga Kota Bandung.</p></article></div></div></section>
+    <section id="dokumentasi" class="section documentation"><div class="container doc-grid"><div><p class="eyebrow">DOKUMENTASI TERKINI</p><h2>Melihat kerja,<br/><em>merasakan dampak.</em></h2><p class="muted">Masuk untuk melihat ringkasan statistik pengunjung dan dokumentasi pilihan.</p><button class="primary-btn" data-open-login>Masuk ke dashboard <span>→</span></button></div><div class="stats"><div><strong id="public-visitors">0</strong><span>Total kunjungan</span></div><div><strong>24</strong><span>Dokumentasi bulan ini</span></div><div><strong>3</strong><span>Kanal layanan</span></div></div></div></section>
+  </main>
+  <footer><div class="container footer-wrap"><span>© 2024 Humas DPRD Kota Bandung</span><span>Terbuka · Terhubung · Terpercaya</span></div></footer>
+
+  <div class="modal hidden" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="modal-backdrop" data-close-login></div><div class="modal-card"><button class="close" data-close-login aria-label="Tutup">×</button><span class="modal-icon">B</span><p class="eyebrow">AKSES DASHBOARD</p><h2 id="login-title">Kenali pengunjung kami</h2><p class="modal-intro">Pilih data singkat berikut untuk melanjutkan.</p><form id="login-form"><label>Jenis kelamin<select id="gender" required><option value="">Pilih jenis kelamin</option><option>Laki-laki</option><option>Perempuan</option></select></label><label>Asal daerah<select id="origin" required><option value="">Pilih asal daerah</option><option>Bandung</option><option>Luar Bandung</option></select></label><button class="primary-btn full" type="submit">Masuk ke dashboard <span>→</span></button></form><p class="privacy">Data ini hanya digunakan untuk statistik kunjungan sederhana.</p></div></div>
+  <div class="toast" id="toast"></div><script src="script.js"></script>
+</body>
+</html>
