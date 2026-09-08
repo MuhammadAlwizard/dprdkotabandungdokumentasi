@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const ARCHIVE = "https://dprdkotabandungdokumentasi.vercel.app/";
+const ARCHIVE = "/arsip";
 
 export default function HomePage() {
   const [visitors, setVisitors] = useState(0), [open, setOpen] = useState(false), [profile, setProfile] = useState(false), [message, setMessage] = useState("");
