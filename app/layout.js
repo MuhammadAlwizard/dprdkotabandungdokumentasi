@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Dokumentasi Kegiatan DPRD Kota Bandung",
-  description: "Sistem informasi dokumentasi kegiatan DPRD Kota Bandung",
+  title: "Humas DPRD Kota Bandung",
+  description: "Portal informasi dan dokumentasi Humas DPRD Kota Bandung",
 };
 
 export default function RootLayout({ children }) {

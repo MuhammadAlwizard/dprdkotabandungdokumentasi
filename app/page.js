@@ -1,125 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import Calendar from "react-calendar";
-import { supabase } from "@/lib/supabaseClient";
-import Navbar from "@/components/Navbar";
-import { format } from "date-fns";
 
-function toDateKey(date) {
-  return format(date, "yyyy-MM-dd");
-}
-
-// Tanggal default yang tampil pertama kali saat halaman dibuka: tanggal 10
-// bulan berjalan (bukan hari ini). Ganti angka "10" di bawah kalau mau ubah.
-function getTanggalDefault() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), 10);
-}
+const ARCHIVE = "https://dprdkotabandungdokumentasi.vercel.app/";
 
 export default function HomePage() {
-  const [tanggalDipilih, setTanggalDipilih] = useState(getTanggalDefault());
-  const [semuaTanggalKegiatan, setSemuaTanggalKegiatan] = useState(new Set());
-  const [kegiatanHariItu, setKegiatanHariItu] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Ambil semua tanggal yang punya kegiatan (untuk kasih tanda titik di kalender)
-  useEffect(() => {
-    async function fetchTanggalKegiatan() {
-      const { data, error } = await supabase
-        .from("kegiatan")
-        .select("tanggal")
-        .eq("status", "publish");
-      if (!error && data) {
-        setSemuaTanggalKegiatan(new Set(data.map((k) => k.tanggal)));
-      }
-    }
-    fetchTanggalKegiatan();
-  }, []);
-
-  // Ambil kegiatan pada tanggal yang dipilih
-  useEffect(() => {
-    async function fetchKegiatanTanggal() {
-      setLoading(true);
-      const key = toDateKey(tanggalDipilih);
-      const { data, error } = await supabase
-        .from("kegiatan")
-        .select("id, judul, jam_mulai, jam_selesai, lokasi, kategori(nama), komisi(nama)")
-        .eq("status", "publish")
-        .eq("tanggal", key)
-        .order("jam_mulai", { ascending: true });
-
-      if (!error) setKegiatanHariItu(data || []);
-      setLoading(false);
-    }
-    fetchKegiatanTanggal();
-  }, [tanggalDipilih]);
-
-  return (
-    <main className="min-h-screen">
-      <Navbar />
-      <div className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-8">
-        <section className="bg-white rounded-2xl shadow p-5">
-          <h1 className="text-xl font-bold text-dprd-red mb-1">
-            Kalender Kegiatan
-          </h1>
-          <p className="text-sm text-gray-500 mb-4">
-            Klik tanggal untuk melihat kegiatan DPRD Kota Bandung pada hari
-            tersebut.
-          </p>
-          <Calendar
-            onChange={setTanggalDipilih}
-            value={tanggalDipilih}
-            locale="id-ID"
-            tileClassName={({ date }) =>
-              semuaTanggalKegiatan.has(toDateKey(date)) ? "has-kegiatan" : null
-            }
-          />
-        </section>
-
-        <section className="bg-white rounded-2xl shadow p-5">
-          <h2 className="text-lg font-bold text-dprd-red mb-4">
-            Kegiatan Tanggal {format(tanggalDipilih, "dd MMMM yyyy")}
-          </h2>
-
-          {loading && <p className="text-sm text-gray-400">Memuat data...</p>}
-
-          {!loading && kegiatanHariItu.length === 0 && (
-            <p className="text-sm text-gray-400">
-              Tidak ada kegiatan pada tanggal ini.
-            </p>
-          )}
-
-          <div className="flex flex-col gap-3">
-            {kegiatanHariItu.map((k) => (
-              <Link
-                key={k.id}
-                href={`/kegiatan/${k.id}`}
-                className="block border border-gray-100 rounded-xl p-4 hover:border-dprd-gold hover:shadow transition"
-              >
-                <p className="font-semibold text-gray-800">{k.judul}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {k.jam_mulai?.slice(0, 5)}
-                  {k.jam_selesai ? ` - ${k.jam_selesai.slice(0, 5)}` : ""}
-                  {k.lokasi ? ` • ${k.lokasi}` : ""}
-                </p>
-                <div className="flex gap-2 mt-2 flex-wrap">
-                  {k.kategori?.nama && (
-                    <span className="text-[11px] bg-dprd-red/10 text-dprd-red px-2 py-0.5 rounded-full">
-                      {k.kategori.nama}
-                    </span>
-                  )}
-                  {k.komisi?.nama && (
-                    <span className="text-[11px] bg-dprd-gold/20 text-dprd-dark px-2 py-0.5 rounded-full">
-                      {k.komisi.nama}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </div>
-    </main>
-  );
+  const [visitors, setVisitors] = useState(0), [open, setOpen] = useState(false), [profile, setProfile] = useState(false), [message, setMessage] = useState("");
+  useEffect(() => { const n = Number(localStorage.getItem("dprd_visitors") || 0) + 1; localStorage.setItem("dprd_visitors", n); setVisitors(n); setProfile(Boolean(localStorage.getItem("dprd_profile"))); }, []);
+  function login(e) { e.preventDefault(); const data = new FormData(e.currentTarget); localStorage.setItem("dprd_profile", JSON.stringify(Object.fromEntries(data))); setProfile(true); setOpen(false); setMessage("Selamat datang di dashboard Humas DPRD Kota Bandung."); setTimeout(() => setMessage(""), 3000); }
+  return <main className="min-h-screen bg-white text-[#10233e]">
+    <header className="sticky top-0 z-10 flex h-[78px] items-center justify-between border-b border-[#dce5f0] bg-white px-6 md:px-[calc((100%-1120px)/2)]"><a href="#beranda" className="flex items-center gap-2 font-bold"><span className="grid h-9 w-9 place-items-center rounded-lg bg-[#1553a1] text-xl text-white">B</span><span className="leading-tight tracking-widest">DPRD<small className="block text-[8px] font-normal tracking-[2px] text-slate-500">KOTA BANDUNG</small></span></a><nav className="hidden gap-7 text-sm text-slate-500 md:flex"><a href="#tentang">Tentang</a><a href="#layanan">Layanan Humas</a><a href="#dokumentasi">Dokumentasi</a></nav><button onClick={() => setOpen(true)} className="rounded border border-[#1553a1] px-4 py-2 text-sm font-semibold text-[#1553a1]">Masuk →</button></header>
+    <section id="beranda" className="grid min-h-[560px] items-center gap-12 bg-[#f5f8fc] px-6 py-16 md:grid-cols-2 md:px-[calc((100%-1120px)/2)]"><div><p className="mb-4 text-[11px] font-bold tracking-[2px] text-[#1553a1]">PORTAL INFORMASI PUBLIK</p><h1 className="font-serif text-5xl font-bold leading-tight md:text-6xl">Menjembatani DPRD dengan <em className="text-[#1553a1]">warga Bandung.</em></h1><p className="my-6 max-w-xl leading-8 text-slate-500">Dapatkan informasi resmi, kegiatan, dan dokumentasi DPRD Kota Bandung melalui kanal Humas yang terbuka dan mudah diakses.</p><div className="flex items-center gap-6"><a href="#tentang" className="rounded bg-[#1553a1] px-5 py-3 text-sm font-semibold text-white">Kenal lebih dekat ↗</a><a href={ARCHIVE} target="_blank" rel="noreferrer" className="text-sm font-semibold text-slate-500">Lihat dokumentasi →</a></div><p className="mt-12 text-xs text-slate-400">● Informasi diperbarui secara berkala oleh Humas DPRD Kota Bandung</p></div><div className="relative h-[400px] overflow-hidden rounded bg-[#0b2f63] p-10 text-white"><p className="text-[10px] tracking-[3px] opacity-70">BANDUNG</p><p className="mt-6 font-serif text-4xl leading-tight">Keterbukaan.<br />Kedekatan.<br /><em className="text-[#72b4ff]">Kepercayaan.</em></p><div className="mt-7 h-0.5 w-40 bg-[#4b91db]" /><small className="text-[8px] tracking-[2px] text-[#98bbde]">HUMAS DPRD KOTA BANDUNG</small><div className="absolute -right-10 top-14 h-56 w-56 rounded-full bg-[#377fc5]" /></div></section>
+    <section id="tentang" className="grid gap-12 bg-[#f8fafc] px-6 py-24 md:grid-cols-2 md:gap-24 md:px-[calc((100%-1120px)/2)]"><div><p className="mb-4 text-[11px] font-bold tracking-[2px] text-[#1553a1]">TENTANG KAMI</p><h2 className="font-serif text-4xl font-bold">DPRD Kota Bandung hadir untuk <em className="text-[#1553a1]">Bandung yang lebih baik.</em></h2></div><div className="leading-8 text-slate-500"><p>Dewan Perwakilan Rakyat Daerah (DPRD) Kota Bandung merupakan lembaga perwakilan rakyat daerah yang berkedudukan sebagai unsur penyelenggara pemerintahan daerah.</p><p className="mt-4">Melalui fungsi legislasi, anggaran, dan pengawasan, DPRD menyerap aspirasi masyarakat dan mengawal pembangunan Kota Bandung.</p></div></section>
+    <section id="layanan" className="px-6 py-24 md:px-[calc((100%-1120px)/2)]"><p className="mb-4 text-[11px] font-bold tracking-[2px] text-[#1553a1]">PERAN HUMAS</p><h2 className="font-serif text-4xl font-bold">Informasi yang dekat,<br /><em className="text-[#1553a1]">layanan yang terbuka.</em></h2><div className="mt-12 grid gap-5 md:grid-cols-3">{[["01","Informasi Publik","Menyampaikan agenda, kebijakan, dan keputusan DPRD secara transparan."],["02","Dokumentasi Kegiatan","Mengarsipkan rapat, kunjungan kerja, dan kegiatan DPRD untuk masyarakat."],["03","Media & Aspirasi","Membuka ruang komunikasi dan menyerap aspirasi warga Kota Bandung."]].map(([no,title,text]) => <article key={no} className="border border-[#dce5f0] p-7"><b className="text-[#1553a1]">{no}</b><h3 className="mt-8 font-serif text-2xl font-bold">{title}</h3><p className="mt-3 text-sm leading-7 text-slate-500">{text}</p></article>)}</div></section>
+    <section id="dokumentasi" className="grid gap-12 bg-[#0b2f63] px-6 py-24 text-white md:grid-cols-2 md:px-[calc((100%-1120px)/2)]"><div><p className="mb-4 text-[11px] font-bold tracking-[2px] text-[#72b4ff]">ARSIP DOKUMENTASI</p><h2 className="font-serif text-4xl font-bold">Melihat kerja,<br /><em className="text-[#72b4ff]">merasakan dampak.</em></h2><p className="my-6 max-w-md text-sm leading-7 text-[#b5c4d9]">Jelajahi dokumentasi kegiatan dan informasi publik melalui arsip resmi Humas DPRD Kota Bandung.</p><button onClick={() => setOpen(true)} className="rounded bg-[#1553a1] px-5 py-3 text-sm font-semibold">Masuk ke dashboard →</button></div>{profile ? <div className="grid grid-cols-3 self-center">{[[visitors.toLocaleString("id-ID"),"Total kunjungan"],["24","Dokumentasi bulan ini"],["3","Kanal layanan"]].map(([n,l]) => <div key={l} className="border-l border-[#315486] p-5"><strong className="font-serif text-4xl text-[#72b4ff]">{n}</strong><span className="mt-2 block text-xs text-[#b5c4d9]">{l}</span></div>)}</div> : <div className="self-center border border-dashed border-[#6483ad] p-8 text-sm text-[#b5c4d9]">🔒 Masuk untuk melihat statistik pengunjung.</div>}</section>
+    <footer className="flex justify-between px-6 py-6 text-xs text-slate-400 md:px-[calc((100%-1120px)/2)]">© 2024 Humas DPRD Kota Bandung <span>Terbuka · Terhubung · Terpercaya</span></footer>
+    {open && <div className="fixed inset-0 z-20 grid place-items-center bg-[#071a35cc] p-4" onClick={() => setOpen(false)}><div className="relative w-full max-w-md rounded bg-white p-9 text-[#10233e]" onClick={e => e.stopPropagation()}><button className="absolute right-4 top-2 text-2xl text-slate-400" onClick={() => setOpen(false)}>×</button><span className="grid h-9 w-9 place-items-center rounded-lg bg-[#1553a1] text-xl text-white">B</span><p className="mt-6 text-[11px] font-bold tracking-[2px] text-[#1553a1]">AKSES DASHBOARD</p><h2 className="mt-3 font-serif text-3xl font-bold">Kenali pengunjung kami</h2><p className="my-3 text-sm text-slate-500">Pilih data singkat berikut untuk melanjutkan.</p><form onSubmit={login}><label className="mt-4 block text-xs font-semibold">Jenis kelamin<select name="gender" required className="mt-2 block w-full rounded border border-[#dce5f0] p-3"><option value="">Pilih jenis kelamin</option><option>Laki-laki</option><option>Perempuan</option></select></label><label className="mt-4 block text-xs font-semibold">Asal daerah<select name="origin" required className="mt-2 block w-full rounded border border-[#dce5f0] p-3"><option value="">Pilih asal daerah</option><option>Bandung</option><option>Luar Bandung</option></select></label><button className="mt-5 w-full rounded bg-[#1553a1] p-3 text-sm font-semibold text-white">Masuk ke dashboard →</button></form><small className="mt-5 block text-center text-[10px] text-slate-400">Data hanya digunakan untuk statistik kunjungan sederhana.</small></div></div>}
+    {message && <div className="fixed bottom-6 right-6 z-30 rounded bg-[#0b2f63] px-5 py-3 text-xs text-white">{message}</div>}
+  </main>;
 }
