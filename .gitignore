@@ -4,3 +4,19 @@ node_modules
 .env.local
 .DS_Store
 npm-debug.log*
+
+# Public-repo guard (see CLAUDE.md)
+.env.*
+!.env.example
+out
+dist
+coverage
+.claude
+*.log
+*.zip
+*.tar
+*.sql
+*.pem
+*.key
+Thumbs.db
+!supabase/*.sql
