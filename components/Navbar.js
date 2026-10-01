@@ -23,7 +23,7 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex gap-4 text-sm font-medium shrink-0">
-          <Link href="/" className="hover:text-dprd-gold transition">
+          <Link href="/kalender" className="hover:text-dprd-gold transition">
             Kalender
           </Link>
           <Link href="/arsip" className="hover:text-dprd-gold transition">

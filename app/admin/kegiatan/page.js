@@ -4,6 +4,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import AdminShell from "@/components/AdminShell";
 import { format } from "date-fns";
+import { id as localeId } from "date-fns/locale";
 
 export default function KelolaKegiatanPage() {
   const [list, setList] = useState([]);
@@ -74,7 +75,7 @@ export default function KelolaKegiatanPage() {
                   {k.judul}
                 </td>
                 <td className="px-4 py-3 text-gray-600">
-                  {format(new Date(k.tanggal), "dd MMM yyyy")}
+                  {format(new Date(k.tanggal), "dd MMM yyyy", { locale: localeId })}
                 </td>
                 <td className="px-4 py-3 text-gray-600">
                   {k.kategori?.nama || "-"}
