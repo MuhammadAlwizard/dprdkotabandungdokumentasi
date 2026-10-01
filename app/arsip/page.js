@@ -4,6 +4,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import Navbar from "@/components/Navbar";
 import { format } from "date-fns";
+import { id as localeId } from "date-fns/locale";
 
 export default function ArsipPage() {
   const [list, setList] = useState([]);
@@ -83,7 +84,7 @@ export default function ArsipPage() {
               <div>
                 <p className="font-semibold text-gray-800">{k.judul}</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {format(new Date(k.tanggal), "dd MMMM yyyy")}
+                  {format(new Date(k.tanggal), "dd MMMM yyyy", { locale: localeId })}
                   {k.lokasi ? ` • ${k.lokasi}` : ""}
                 </p>
               </div>

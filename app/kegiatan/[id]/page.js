@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import Navbar from "@/components/Navbar";
 import { format } from "date-fns";
+import { id as localeId } from "date-fns/locale";
 
 export default function DetailKegiatanPage() {
   const { id } = useParams();
@@ -80,7 +81,7 @@ export default function DetailKegiatanPage() {
 
         <h1 className="text-2xl font-bold text-gray-800">{kegiatan.judul}</h1>
         <p className="text-sm text-gray-500 mt-1">
-          {format(new Date(kegiatan.tanggal), "dd MMMM yyyy")}
+          {format(new Date(kegiatan.tanggal), "dd MMMM yyyy", { locale: localeId })}
           {kegiatan.jam_mulai ? ` • ${kegiatan.jam_mulai.slice(0, 5)}` : ""}
           {kegiatan.jam_selesai ? ` - ${kegiatan.jam_selesai.slice(0, 5)}` : ""}
           {kegiatan.lokasi ? ` • ${kegiatan.lokasi}` : ""}
